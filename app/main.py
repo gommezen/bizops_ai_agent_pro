@@ -120,10 +120,10 @@ with tabs[3]:
     ctx = build_context(needs, dq, mdl, cfg)
     html = render_html(ctx, out_path=Path("data/runs/manual_report/executive_report.html"))
     st.success("HTML report generated under data/runs/manual_report/")
-    with open("data/runs/manual_report/executive_report.html", encoding="utf-8") as f:
+    with open("data/runs/manual_report/executive_report.html", encoding="utf-8") as fh_html:
         st.download_button(
             "Download HTML report",
-            data=f.read(),
+            data=fh_html.read(),
             file_name="executive_report.html",
             mime="text/html",
         )
@@ -135,10 +135,10 @@ with tabs[3]:
         pdf_path = Path("data/runs/manual_report/executive_report.pdf")
         html_to_pdf(html_str, pdf_path)
         st.success(f"PDF created: {pdf_path}")
-        with open(pdf_path, "rb") as f:
+        with open(pdf_path, "rb") as fh_pdf:
             st.download_button(
                 "Download PDF report",
-                data=f.read(),
+                data=fh_pdf.read(),
                 file_name="executive_report.pdf",
                 mime="application/pdf",
             )
