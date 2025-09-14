@@ -39,6 +39,14 @@ tabs = st.tabs(["Analyze needs", "Data quality", "Modeling", "Report", "Agent"])
 
 with tabs[0]:
     st.subheader("Analyze needs")
+    # Kort intro-tekst
+    st.markdown(
+        """
+        💡 **Hvad gør dette værktøj?**
+        Automatiserer analysen af tekst- og datasæt for at identificere mønstre,
+        udlede behov og foreslå KPI’er til videre rapportering.
+        """
+    )
     clusters = cfg.get("needs", {}).get("clusters", 4)
     top_terms = cfg.get("needs", {}).get("top_terms", 8)
     needs = needs_mod.run_needs(str(interviews_dir), clusters=clusters, top_terms=top_terms)
