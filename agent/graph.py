@@ -11,13 +11,13 @@ from .tools.utils import load_config, new_run_dir
 
 # ---- State ----
 class AgentState(TypedDict, total=False):
-    plan: list[str]               # fx ["prepare","needs","dq","model","report","pdf"]
-    cursor: int                   # intern peger til næste step i plan
-    interviews_dir: str           # sti til interview-tekster
-    csv_path: str                 # sti til csv
-    run_dir: str                  # output-mappe pr. kørsel
-    cfg: dict[str, Any]           # konfiguration
-    logs: list[str]               # loglinjer til UI
+    plan: list[str]  # fx ["prepare","needs","dq","model","report","pdf"]
+    cursor: int  # intern peger til næste step i plan
+    interviews_dir: str  # sti til interview-tekster
+    csv_path: str  # sti til csv
+    run_dir: str  # output-mappe pr. kørsel
+    cfg: dict[str, Any]  # konfiguration
+    logs: list[str]  # loglinjer til UI
 
     # Artefakter
     needs: dict[str, Any]
@@ -25,10 +25,12 @@ class AgentState(TypedDict, total=False):
     model: dict[str, Any]
     html_path: str
     pdf_path: str
-    next: str                     # routerens valg af næste node
+    next: str  # routerens valg af næste node
+
 
 # ---- Hjælpere ----
-ALLOWED_STEPS = {"prepare","needs","dq","model","report","pdf","end"}
+ALLOWED_STEPS = {"prepare", "needs", "dq", "model", "report", "pdf", "end"}
+
 
 def _log(state: AgentState, msg: str) -> AgentState:
     logs = list(state.get("logs", []))
@@ -36,10 +38,12 @@ def _log(state: AgentState, msg: str) -> AgentState:
     state["logs"] = logs
     return state
 
+
 def _want(state: AgentState, step: str) -> bool:
     """Returnér True hvis step er i planen (eller plan er None = kør alt)."""
     plan = state.get("plan")
     return True if plan is None else (step in plan)
+
 
 def _ensure_run_dir(state: AgentState) -> Path:
     """Sørger for at der er en run-folder; opretter hvis mangler."""
@@ -52,6 +56,7 @@ def _ensure_run_dir(state: AgentState) -> Path:
     p.mkdir(parents=True, exist_ok=True)
     return p
 
+
 def _ensure_cfg(state: AgentState) -> dict[str, Any]:
     """Sørger for at der er cfg i state; indlæser hvis mangler."""
     cfg = state.get("cfg")
@@ -61,6 +66,7 @@ def _ensure_cfg(state: AgentState) -> dict[str, Any]:
         _log(state, "Auto-prepare: config loaded")
     return cfg
 
+
 # ---- Noder (alle returnerer state/dict) ----
 def node_prepare(state: AgentState) -> AgentState:
     if not _want(state, "prepare"):
@@ -69,6 +75,7 @@ def node_prepare(state: AgentState) -> AgentState:
     state["run_dir"] = run_dir
     state["cfg"] = load_config()
     return _log(state, f"Prepare: run initialized at {run_dir}")
+
 
 def node_needs(state: AgentState) -> AgentState:
     if not _want(state, "needs"):
@@ -85,6 +92,7 @@ def node_needs(state: AgentState) -> AgentState:
     except Exception as e:
         return _log(state, f"Needs: ERROR {e}")
 
+
 def node_dq(state: AgentState) -> AgentState:
     if not _want(state, "dq"):
         return _log(state, "Skip: dq")
@@ -97,6 +105,7 @@ def node_dq(state: AgentState) -> AgentState:
         return _log(state, f"DQ: profiled {csv_path}")
     except Exception as e:
         return _log(state, f"DQ: ERROR {e}")
+
 
 def node_model(state: AgentState) -> AgentState:
     if not _want(state, "model"):
@@ -113,22 +122,20 @@ def node_model(state: AgentState) -> AgentState:
             test_size=cfg.get("model", {}).get("test_size", 0.2),
             random_state=cfg.get("model", {}).get("random_state", 42),
             want_shap=want_shap,
-            run_dir=run_dir
+            run_dir=run_dir,
         )
         state["model"] = res
         return _log(state, f"Model: trained target='{target}', shap={want_shap}")
     except Exception as e:
         return _log(state, f"Model: ERROR {e}")
 
+
 def node_report(state: AgentState) -> AgentState:
     if not _want(state, "report"):
         return _log(state, "Skip: report")
     run_dir = _ensure_run_dir(state)
     cfg = _ensure_cfg(state)
-    ctx = build_context(
-        state.get("needs", {}), state.get("dq", {}),
-        state.get("model", {}), cfg
-    )
+    ctx = build_context(state.get("needs", {}), state.get("dq", {}), state.get("model", {}), cfg)
     html_path = run_dir / "executive_report.html"
     try:
         render_html(ctx, out_path=html_path)
@@ -136,6 +143,7 @@ def node_report(state: AgentState) -> AgentState:
         return _log(state, f"Report: HTML -> {html_path}")
     except Exception as e:
         return _log(state, f"Report: ERROR {e}")
+
 
 def node_pdf(state: AgentState) -> AgentState:
     if not _want(state, "pdf"):
@@ -154,12 +162,13 @@ def node_pdf(state: AgentState) -> AgentState:
     except Exception as e:
         return _log(state, f"PDF: ERROR {e}")
 
+
 # ---- Router (returnerer ALTID state/dict) ----
 def router(state: AgentState) -> AgentState:
     plan = state.get("plan", [])
     idx = int(state.get("cursor", 0))
     # Hvis ingen plan er angivet -> kør alle i standardrækkefølge
-    default_plan = ["prepare","needs","dq","model","report","pdf"]
+    default_plan = ["prepare", "needs", "dq", "model", "report", "pdf"]
     active_plan = default_plan if not plan else plan
 
     if idx >= len(active_plan):
@@ -170,18 +179,19 @@ def router(state: AgentState) -> AgentState:
         state["next"] = step if step in ALLOWED_STEPS else "end"
     return state
 
+
 # ---- Byg graf ----
 def build_graph():
     sg = StateGraph(AgentState)
 
     # Noder
-    sg.add_node("router",  router)   # router returnerer state og sætter state["next"]
+    sg.add_node("router", router)  # router returnerer state og sætter state["next"]
     sg.add_node("prepare", node_prepare)
-    sg.add_node("needs",   node_needs)
-    sg.add_node("dq",      node_dq)
-    sg.add_node("model",   node_model)
-    sg.add_node("report",  node_report)
-    sg.add_node("pdf",     node_pdf)
+    sg.add_node("needs", node_needs)
+    sg.add_node("dq", node_dq)
+    sg.add_node("model", node_model)
+    sg.add_node("report", node_report)
+    sg.add_node("pdf", node_pdf)
 
     # Entry point
     sg.set_entry_point("router")
@@ -192,26 +202,27 @@ def build_graph():
         lambda s: s.get("next", "end"),
         {
             "prepare": "prepare",
-            "needs":   "needs",
-            "dq":      "dq",
-            "model":   "model",
-            "report":  "report",
-            "pdf":     "pdf",
-            "end":     END,
-        }
+            "needs": "needs",
+            "dq": "dq",
+            "model": "model",
+            "report": "report",
+            "pdf": "pdf",
+            "end": END,
+        },
     )
 
     # Efter hvert step går vi tilbage til router for at vælge næste
-    for n in ["prepare","needs","dq","model","report","pdf"]:
+    for n in ["prepare", "needs", "dq", "model", "report", "pdf"]:
         sg.add_edge(n, "router")
 
     return sg.compile()
+
 
 # ---- Public API ----
 def run_plan(
     plan: list[str] | None = None,
     interviews_dir: str = "data/interviews",
-    csv_path: str = "data/sample.csv"
+    csv_path: str = "data/sample.csv",
 ) -> AgentState:
     """
     Kør workflowet. Eksempler på plan:
@@ -226,7 +237,7 @@ def run_plan(
         "cursor": 0,
         "interviews_dir": interviews_dir,
         "csv_path": csv_path,
-        "logs": []
+        "logs": [],
     }
     final_state = graph.invoke(state)  # synkron eksekvering
     return final_state

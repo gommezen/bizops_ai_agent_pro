@@ -3,13 +3,20 @@
 En komplet demo-app til behovsanalyse, datakvalitet, baseline-model, og rapporter (HTML + PDF) med **run-folders** og **LangGraph-agent**.
 
 ## Hurtig start (Windows PowerShell)
-```powershell
-cd "C:\Users\ITSMARTSOLUTIONS\Documents\Python Scripts\bizops_ai_agent_pro"
+
+# Gå til projektmappen
+cd bizops_ai_agent_pro
+
+# Opret og aktivér virtuelt miljø
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+
+# Installer afhængigheder
 pip install -r requirements.txt
+
+# Start appen
 streamlit run app/main.py
-```
+
 
 > PDF-eksport bruger **xhtml2pdf** (færre systemkrav end WeasyPrint). Hvis du har WeasyPrint, kan du skifte i `agent/tools/reporting.py`.
 

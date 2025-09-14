@@ -8,9 +8,7 @@ from sklearn.model_selection import train_test_split
 
 def infer_task(y: pd.Series) -> str:
     return (
-        "classification"
-        if y.nunique() <= 10 and set(y.unique()).issubset({0, 1})
-        else "regression"
+        "classification" if y.nunique() <= 10 and set(y.unique()).issubset({0, 1}) else "regression"
     )
 
 

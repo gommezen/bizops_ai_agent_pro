@@ -39,8 +39,8 @@ tabs = st.tabs(["Analyze needs", "Data quality", "Modeling", "Report", "Agent"])
 
 with tabs[0]:
     st.subheader("Analyze needs")
-    clusters = cfg.get("needs",{}).get("clusters",4)
-    top_terms = cfg.get("needs",{}).get("top_terms",8)
+    clusters = cfg.get("needs", {}).get("clusters", 4)
+    top_terms = cfg.get("needs", {}).get("top_terms", 8)
     needs = needs_mod.run_needs(str(interviews_dir), clusters=clusters, top_terms=top_terms)
     st.write("**Themes:**")
     for t in needs["themes"]:
@@ -64,10 +64,10 @@ with tabs[2]:
     st.subheader("Modeling")
     csv_path = str(data_dir / ("uploaded.csv" if uploaded_csv else "sample.csv"))
     df = pd.read_csv(csv_path)
-    target_default = cfg.get("model",{}).get("target","churn")
+    target_default = cfg.get("model", {}).get("target", "churn")
     if target_default not in df.columns:
         target_default = df.columns[-1]
-    
+
     target = st.selectbox(
         "Vælg target-kolonne",
         options=df.columns.tolist(),
@@ -83,6 +83,7 @@ with tabs[2]:
     if st.button("Train baseline"):
         try:
             from pathlib import Path
+
             run_dir = Path("data/runs") / "manual_run"
             run_dir.mkdir(parents=True, exist_ok=True)
             model_info = mdl_mod.run_model(
@@ -129,6 +130,7 @@ with tabs[3]:
 
     if st.button("Also export PDF"):
         from pathlib import Path
+
         html_str = Path("data/runs/manual_report/executive_report.html").read_text(encoding="utf-8")
         pdf_path = Path("data/runs/manual_report/executive_report.pdf")
         html_to_pdf(html_str, pdf_path)
@@ -192,4 +194,3 @@ with tabs[4]:
                     )
         except Exception as e:
             st.error(str(e))
-
