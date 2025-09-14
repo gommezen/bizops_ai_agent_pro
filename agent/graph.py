@@ -1,28 +1,28 @@
-from typing import TypedDict, List, Dict, Any
 from pathlib import Path
-from langgraph.graph import StateGraph, END
+from typing import Any, TypedDict
+
+from langgraph.graph import END, StateGraph
 
 # Værktøjer
-from .tools import needs as needs_mod
-from .tools import profiling as dq_mod
-from .tools import modeling as mdl_mod
-from .tools.reporting import build_context, render_html, html_to_pdf
-from .tools.utils import new_run_dir, load_config
+from .tools import modeling as mdl_mod, needs as needs_mod, profiling as dq_mod
+from .tools.reporting import build_context, html_to_pdf, render_html
+from .tools.utils import load_config, new_run_dir
+
 
 # ---- State ----
 class AgentState(TypedDict, total=False):
-    plan: List[str]               # fx ["prepare","needs","dq","model","report","pdf"]
+    plan: list[str]               # fx ["prepare","needs","dq","model","report","pdf"]
     cursor: int                   # intern peger til næste step i plan
     interviews_dir: str           # sti til interview-tekster
     csv_path: str                 # sti til csv
     run_dir: str                  # output-mappe pr. kørsel
-    cfg: Dict[str, Any]           # konfiguration
-    logs: List[str]               # loglinjer til UI
+    cfg: dict[str, Any]           # konfiguration
+    logs: list[str]               # loglinjer til UI
 
     # Artefakter
-    needs: Dict[str, Any]
-    dq: Dict[str, Any]
-    model: Dict[str, Any]
+    needs: dict[str, Any]
+    dq: dict[str, Any]
+    model: dict[str, Any]
     html_path: str
     pdf_path: str
     next: str                     # routerens valg af næste node
@@ -52,7 +52,7 @@ def _ensure_run_dir(state: AgentState) -> Path:
     p.mkdir(parents=True, exist_ok=True)
     return p
 
-def _ensure_cfg(state: AgentState) -> Dict[str, Any]:
+def _ensure_cfg(state: AgentState) -> dict[str, Any]:
     """Sørger for at der er cfg i state; indlæser hvis mangler."""
     cfg = state.get("cfg")
     if cfg is None:
@@ -73,7 +73,8 @@ def node_prepare(state: AgentState) -> AgentState:
 def node_needs(state: AgentState) -> AgentState:
     if not _want(state, "needs"):
         return _log(state, "Skip: needs")
-    _ensure_run_dir(state); cfg = _ensure_cfg(state)
+    _ensure_run_dir(state)
+    cfg = _ensure_cfg(state)
     folder = state.get("interviews_dir", "data/interviews")
     clusters = cfg.get("needs", {}).get("clusters", 4)
     top_terms = cfg.get("needs", {}).get("top_terms", 8)
@@ -87,7 +88,8 @@ def node_needs(state: AgentState) -> AgentState:
 def node_dq(state: AgentState) -> AgentState:
     if not _want(state, "dq"):
         return _log(state, "Skip: dq")
-    _ensure_run_dir(state); _ensure_cfg(state)
+    _ensure_run_dir(state)
+    _ensure_cfg(state)
     csv_path = state.get("csv_path", "data/sample.csv")
     try:
         res = dq_mod.run_dq(csv_path)
@@ -99,7 +101,8 @@ def node_dq(state: AgentState) -> AgentState:
 def node_model(state: AgentState) -> AgentState:
     if not _want(state, "model"):
         return _log(state, "Skip: model")
-    run_dir = _ensure_run_dir(state); cfg = _ensure_cfg(state)
+    run_dir = _ensure_run_dir(state)
+    cfg = _ensure_cfg(state)
     csv_path = state.get("csv_path", "data/sample.csv")
     target = cfg.get("model", {}).get("target", "churn")
     want_shap = bool(cfg.get("model", {}).get("shap", True))
@@ -120,7 +123,8 @@ def node_model(state: AgentState) -> AgentState:
 def node_report(state: AgentState) -> AgentState:
     if not _want(state, "report"):
         return _log(state, "Skip: report")
-    run_dir = _ensure_run_dir(state); cfg = _ensure_cfg(state)
+    run_dir = _ensure_run_dir(state)
+    cfg = _ensure_cfg(state)
     ctx = build_context(
         state.get("needs", {}), state.get("dq", {}),
         state.get("model", {}), cfg
@@ -136,7 +140,8 @@ def node_report(state: AgentState) -> AgentState:
 def node_pdf(state: AgentState) -> AgentState:
     if not _want(state, "pdf"):
         return _log(state, "Skip: pdf")
-    _ensure_run_dir(state); _ensure_cfg(state)
+    _ensure_run_dir(state)
+    _ensure_cfg(state)
     html_file = Path(state.get("html_path", ""))
     if not html_file.exists():
         return _log(state, "PDF: no HTML found, skipping")
@@ -204,7 +209,7 @@ def build_graph():
 
 # ---- Public API ----
 def run_plan(
-    plan: List[str] | None = None,
+    plan: list[str] | None = None,
     interviews_dir: str = "data/interviews",
     csv_path: str = "data/sample.csv"
 ) -> AgentState:

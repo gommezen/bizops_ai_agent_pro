@@ -1,6 +1,8 @@
-from pathlib import Path
 import datetime as dt
+from pathlib import Path
+
 import yaml
+
 
 def utc_timestamp() -> str:
     return dt.datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")

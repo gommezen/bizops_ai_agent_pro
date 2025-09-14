@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 
 def simple_outlier_count(df: pd.DataFrame) -> int:
     num = df.select_dtypes(include=[np.number])
