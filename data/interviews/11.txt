@@ -1,0 +1,2 @@
+IT-sikkerhedsteamet ønsker bedre værktøjer til at opdage unormal adfærd. Vi mangler en løsning til at analysere logfiler i realtid
+    og identificere mulige angreb. Samtidig vil vi gerne have automatiske rapporter om sikkerhedshændelser, som kan deles med ledelsen.

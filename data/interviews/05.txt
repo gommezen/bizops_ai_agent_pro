@@ -1,0 +1,3 @@
+Kundeservice oplever pres fra stigende antal henvendelser. Ventetiden på telefonen er høj, og mange sager gentager sig.
+    Hvis vi kunne bruge machine learning til at forudsige hvilke kunder der vil ringe, kunne vi dimensionere bemandingen bedre.
+    Vi mangler også et system til at måle kundetilfredshed efter hvert opkald.

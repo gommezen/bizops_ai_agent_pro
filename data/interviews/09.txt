@@ -1,0 +1,3 @@
+Ledelsen efterspørger bedre overblik over risiko. Vi vil gerne kunne simulere forskellige scenarier for markedet og se konsekvenser
+    for indtjening og omkostninger. Der er behov for at integrere eksterne data (makroøkonomi, branchedata) i vores modeller.
+    Målet er at træffe hurtigere og mere informerede strategiske beslutninger.

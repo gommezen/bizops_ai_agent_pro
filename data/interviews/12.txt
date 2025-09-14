@@ -1,0 +1,3 @@
+Salgsafdelingen vil gerne kunne prioritere leads bedre. Vi har mange potentielle kunder i CRM-systemet, men vi ved ikke hvilke der er mest
+    sandsynlige til at købe. En churn-lignende model til leads kunne hjælpe os med at fokusere ressourcerne. Vi ønsker også bedre integration
+    mellem salgs- og marketingdata.

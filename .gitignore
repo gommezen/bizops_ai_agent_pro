@@ -1,0 +1,23 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+.venv*/
+.env
+*.env
+
+# Streamlit / lokale
+.streamlit/
+data/runs/
+data/uploaded.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reports (kan versioneres hvis du vil – men ofte store)
+*.pdf
+*.html

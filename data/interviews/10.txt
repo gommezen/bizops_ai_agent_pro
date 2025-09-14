@@ -1,0 +1,3 @@
+Driftsafdelingen har brug for at forudsige vedligeholdelse på vores maskiner. I dag sker reparationer først når der er fejl, hvilket giver
+    nedetid. Hvis vi kunne indsamle sensordata og træne en model til at forudsige fejl, kunne vi planlægge vedligeholdelse mere effektivt.
+    Det ville reducere omkostninger og øge produktiviteten.

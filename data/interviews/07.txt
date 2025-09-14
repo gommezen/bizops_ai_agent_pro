@@ -1,0 +1,3 @@
+HR-afdelingen vil gerne arbejde mere datadrevet. Vi mangler indsigt i medarbejdertrivsel og ønsker at analysere fraværsmønstre.
+    En model der kan forudsige risiko for opsigelser kunne hjælpe os med at tage tidlige samtaler. Samtidig har vi brug for bedre
+    værktøjer til at måle effekten af vores udviklingsprogrammer.

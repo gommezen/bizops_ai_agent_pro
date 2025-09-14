@@ -1,0 +1,14 @@
+
+Vores organisation står overfor en række udfordringer i forhold til datakvalitet, rapportering og automatisering.
+Mange medarbejdere oplever at de bruger alt for meget tid på at finde og validere data manuelt, og vi har derfor
+svært ved at skabe det nødvendige ledelsesoverblik. Særligt indenfor kundeservice er der problemer med langsom
+svartid, uensartet behandling og utilstrækkelig adgang til historiske oplysninger.
+
+Vi har brug for at udvikle et mere sammenhængende system, der kan samle data på tværs af afdelinger og skabe
+standardrapporter, som ledelsen kan bruge direkte. Derudover ønsker vi at indføre en model til at forudsige churn,
+så vi kan fokusere vores ressourcer på de kunder, der er i risiko for at opsige. Vi vil også gerne arbejde mere
+datadrevet i vores marketing, hvor vi kan bruge prædiktive analyser til at planlægge kampagner.
+
+På nuværende tidspunkt er vores KPI'er uklare. Vi vil gerne reducere churn med 15% det næste år, hæve NPS med 10
+point, og sikre at ledelsesrapportering sker ugentligt i stedet for månedligt. Samtidig er det vigtigt, at vi
+får mere gennemsigtighed i vores processer, og at medarbejderne oplever systemet som en hjælp i deres daglige arbejde.

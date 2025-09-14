@@ -1,0 +1,12 @@
+streamlit
+pandas
+numpy
+scikit-learn
+jinja2
+matplotlib
+xhtml2pdf
+pyyaml
+shap
+langgraph
+langchain-core
+pydantic

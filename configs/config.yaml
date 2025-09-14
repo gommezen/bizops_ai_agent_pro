@@ -1,0 +1,14 @@
+# Standard konfiguration
+needs:
+  clusters: 4
+  top_terms: 8
+
+model:
+  target: churn   # fallback target hvis findes
+  test_size: 0.2
+  random_state: 42
+  shap: true
+
+report:
+  title: Executive Rapport — BizOps AI Agent Pro
+  client_name: Demo Client

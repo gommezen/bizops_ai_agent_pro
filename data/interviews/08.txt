@@ -1,0 +1,3 @@
+Økonomi-afdelingen har behov for automatiserede standardrapporter. I dag bruges meget tid på manuel sammensætning af tal
+    fra forskellige systemer. Vi ønsker et værktøj der kan generere rapporter ugentligt uden manuel indsats og samtidig validere tallene.
+    Det er vigtigt for os at reducere fejl i regnskabet og frigive ressourcer til analyse.

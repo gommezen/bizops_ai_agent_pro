@@ -1,0 +1,3 @@
+Vi oplever stigende udfordringer i forhold til at levere rettidig rapportering. Flere afdelinger arbejder i siloer,
+    og data deles ikke på tværs. Det betyder, at vi ofte får modstridende tal, og at ledelsen mister tilliden til vores rapporter.
+    Vi har brug for et fælles dashboard, hvor KPI'er er opdateret dagligt, og hvor fejl i datakilder automatisk bliver fanget.

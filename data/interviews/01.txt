@@ -1,0 +1,1 @@
+Kundeservice bruger for meget tid på manuelle opslag og vi mangler overblik i rapporteringen. Vi ønsker lavere churn og højere NPS.
