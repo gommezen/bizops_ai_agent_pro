@@ -11,7 +11,7 @@ from .tools.utils import load_config, new_run_dir
 
 # ---- State ----
 class AgentState(TypedDict, total=False):
-    plan: list[str]  # fx ["prepare","needs","dq","model","report","pdf"]
+    plan: list[str] | None  # fx ["prepare","needs","dq","model","report","pdf"]
     cursor: int  # intern peger til næste step i plan
     interviews_dir: str  # sti til interview-tekster
     csv_path: str  # sti til csv
