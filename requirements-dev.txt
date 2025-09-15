@@ -1,0 +1,8 @@
+# Development dependencies for linting, formatting, type checking, etc.
+ruff
+black
+mypy
+pre-commit
+
+# Type stubs
+types-PyYAML
