@@ -1,3 +1,12 @@
+"""
+Utility functions.
+
+This module provides helper functions for:
+- Configuration loading (YAML)
+- Timestamp creation
+- Run directory management
+"""
+
 import datetime as dt
 from pathlib import Path
 

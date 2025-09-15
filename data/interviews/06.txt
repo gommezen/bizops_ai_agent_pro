@@ -1,3 +1,1 @@
-Marketing har svært ved at forudsige effekten af kampagner. Vi bruger historiske data, men vi har ikke en model til at estimere
-    ROI på tværs af kanaler. Vi ønsker at anvende predictive analytics til at vælge målgrupper og bestemme budgetfordeling.
-    Samtidig skal vi kunne dokumentere resultaterne bedre til ledelsen.
+Manual lookups are a time sink. People search across multiple tools to answer simple questions like “What’s the current churn rate for SMB?” or “Which customers are late on invoices more than twice?” If we had one view with filters and consistent definitions, both finance and success could respond faster. Also, leadership is asking for an implementation plan with milestones: discovery, data foundation, ML pilot, and evaluation.

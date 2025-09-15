@@ -1,3 +1,1 @@
-HR-afdelingen vil gerne arbejde mere datadrevet. Vi mangler indsigt i medarbejdertrivsel og ønsker at analysere fraværsmønstre.
-    En model der kan forudsige risiko for opsigelser kunne hjælpe os med at tage tidlige samtaler. Samtidig har vi brug for bedre
-    værktøjer til at måle effekten af vores udviklingsprogrammer.
+We should automate invoice validation rules: incorrect tax codes, negative amounts, or dates outside the period. These checks could run before we close the books. Another area is a weekly revenue flash report. Even a basic version would help highlight anomalies early. For modeling, we prefer a simple baseline first, then iterate.

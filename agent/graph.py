@@ -3,36 +3,46 @@ from typing import Any, TypedDict
 
 from langgraph.graph import END, StateGraph
 
-# Værktøjer
+# Local imports
 from .tools import modeling as mdl_mod, needs as needs_mod, profiling as dq_mod
 from .tools.reporting import build_context, html_to_pdf, render_html
 from .tools.utils import load_config, new_run_dir
 
 
-# ---- State ----
+# -----------------------------
+# Agent state (shared pipeline state)
+# -----------------------------
 class AgentState(TypedDict, total=False):
-    plan: list[str] | None  # fx ["prepare","needs","dq","model","report","pdf"]
-    cursor: int  # intern peger til næste step i plan
-    interviews_dir: str  # sti til interview-tekster
-    csv_path: str  # sti til csv
-    run_dir: str  # output-mappe pr. kørsel
-    cfg: dict[str, Any]  # konfiguration
-    logs: list[str]  # loglinjer til UI
+    # Plan of steps, e.g. ["prepare","needs","dq","model","report","pdf"]
+    plan: list[str] | None
+    # Internal pointer to the next step in the plan
+    cursor: int
+    # Path to interview text files
+    interviews_dir: str
+    # Path to CSV dataset
+    csv_path: str
+    # Output directory for the current run
+    run_dir: str
+    # Loaded configuration
+    cfg: dict[str, Any]
+    # Log lines to surface in the UI
+    logs: list[str]
 
-    # Artefakter
+    # Outputs (populated as the pipeline runs)
     needs: dict[str, Any]
     dq: dict[str, Any]
     model: dict[str, Any]
     html_path: str
     pdf_path: str
-    next: str  # routerens valg af næste node
+    # Router’s decision for the next node
+    next: str
 
 
-# ---- Hjælpere ----
 ALLOWED_STEPS = {"prepare", "needs", "dq", "model", "report", "pdf", "end"}
 
 
 def _log(state: AgentState, msg: str) -> AgentState:
+    """Append a message to state['logs'] and return the updated state."""
     logs = list(state.get("logs", []))
     logs.append(msg)
     state["logs"] = logs
@@ -40,13 +50,13 @@ def _log(state: AgentState, msg: str) -> AgentState:
 
 
 def _want(state: AgentState, step: str) -> bool:
-    """Returnér True hvis step er i planen (eller plan er None = kør alt)."""
+    """Return True if the step is in the plan (or plan is None => run everything)."""
     plan = state.get("plan")
     return True if plan is None else (step in plan)
 
 
 def _ensure_run_dir(state: AgentState) -> Path:
-    """Sørger for at der er en run-folder; opretter hvis mangler."""
+    """Ensure a run directory exists; create it if missing and update state['run_dir']."""
     rd = state.get("run_dir")
     if not rd:
         rd = new_run_dir().as_posix()
@@ -58,7 +68,7 @@ def _ensure_run_dir(state: AgentState) -> Path:
 
 
 def _ensure_cfg(state: AgentState) -> dict[str, Any]:
-    """Sørger for at der er cfg i state; indlæser hvis mangler."""
+    """Ensure configuration is available in state; load it if missing."""
     cfg = state.get("cfg")
     if cfg is None:
         cfg = load_config()
@@ -67,7 +77,9 @@ def _ensure_cfg(state: AgentState) -> dict[str, Any]:
     return cfg
 
 
-# ---- Noder (alle returnerer state/dict) ----
+# -----------------------------
+# Nodes (each returns the updated state)
+# -----------------------------
 def node_prepare(state: AgentState) -> AgentState:
     if not _want(state, "prepare"):
         return _log(state, "Skip: prepare")
@@ -163,11 +175,14 @@ def node_pdf(state: AgentState) -> AgentState:
         return _log(state, f"PDF: ERROR {e}")
 
 
-# ---- Router (returnerer ALTID state/dict) ----
+# -----------------------------
+# Router (ALWAYS returns the state)
+# -----------------------------
 def router(state: AgentState) -> AgentState:
     plan = state.get("plan", [])
     idx = int(state.get("cursor", 0))
-    # Hvis ingen plan er angivet -> kør alle i standardrækkefølge
+
+    # If no plan is provided -> run all steps in the default order
     default_plan = ["prepare", "needs", "dq", "model", "report", "pdf"]
     active_plan = default_plan if not plan else plan
 
@@ -180,12 +195,14 @@ def router(state: AgentState) -> AgentState:
     return state
 
 
-# ---- Byg graf ----
+# -----------------------------
+# Build graph
+# -----------------------------
 def build_graph():
     sg = StateGraph(AgentState)
 
-    # Noder
-    sg.add_node("router", router)  # router returnerer state og sætter state["next"]
+    # Nodes
+    sg.add_node("router", router)  # router returns state and sets state["next"]
     sg.add_node("prepare", node_prepare)
     sg.add_node("needs", node_needs)
     sg.add_node("dq", node_dq)
@@ -196,7 +213,7 @@ def build_graph():
     # Entry point
     sg.set_entry_point("router")
 
-    # Conditional edges der læser 'next' fra state (IKKE kalder router igen)
+    # Conditional edges that read 'next' from state (DO NOT call router again)
     sg.add_conditional_edges(
         "router",
         lambda s: s.get("next", "end"),
@@ -211,25 +228,27 @@ def build_graph():
         },
     )
 
-    # Efter hvert step går vi tilbage til router for at vælge næste
+    # After each step, return to the router to choose the next node
     for n in ["prepare", "needs", "dq", "model", "report", "pdf"]:
         sg.add_edge(n, "router")
 
     return sg.compile()
 
 
-# ---- Public API ----
+# -----------------------------
+# Public API
+# -----------------------------
 def run_plan(
     plan: list[str] | None = None,
     interviews_dir: str = "data/interviews",
     csv_path: str = "data/sample.csv",
 ) -> AgentState:
     """
-    Kør workflowet. Eksempler på plan:
-      - None                              -> kør alle trin i standard rækkefølge
-      - ["dq"]                            -> kun datakvalitet
-      - ["report","pdf"]                  -> lav rapport/PDF (run_dir og cfg oprettes automatisk)
-      - ["prepare","needs","model"]       -> kør udvalgte trin
+    Run the workflow. Example plans:
+      - None                        -> run all steps in default order
+      - ["dq"]                      -> data quality only
+      - ["report","pdf"]            -> generate report/PDF (run_dir and cfg are auto-prepared)
+      - ["prepare","needs","model"] -> run a selected subset of steps
     """
     graph = build_graph()
     state: AgentState = {
@@ -239,5 +258,6 @@ def run_plan(
         "csv_path": csv_path,
         "logs": [],
     }
-    final_state = graph.invoke(state)  # synkron eksekvering
+    # Synchronous execution
+    final_state = graph.invoke(state)
     return final_state

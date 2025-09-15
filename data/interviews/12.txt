@@ -1,3 +1,1 @@
-Salgsafdelingen vil gerne kunne prioritere leads bedre. Vi har mange potentielle kunder i CRM-systemet, men vi ved ikke hvilke der er mest
-    sandsynlige til at købe. En churn-lignende model til leads kunne hjælpe os med at fokusere ressourcerne. Vi ønsker også bedre integration
-    mellem salgs- og marketingdata.
+Leadership is asking for a phased implementation plan for automation: start with data checks and standardized reports, then a forecasting and churn pilot. Success criteria should be clear: reduced report latency, fewer manual steps, lower error rate, and measurable churn reduction.

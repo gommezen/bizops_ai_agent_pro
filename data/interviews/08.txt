@@ -1,3 +1,1 @@
-Økonomi-afdelingen har behov for automatiserede standardrapporter. I dag bruges meget tid på manuel sammensætning af tal
-    fra forskellige systemer. Vi ønsker et værktøj der kan generere rapporter ugentligt uden manuel indsats og samtidig validere tallene.
-    Det er vigtigt for os at reducere fejl i regnskabet og frigive ressourcer til analyse.
+For KPIs, we care about churn rate, NPS, time-to-insight for ad-hoc questions, and report latency. Moving from monthly to weekly reports would be a quick win. We also want a shared glossary so teams interpret metrics the same way. Eventually we’ll experiment with propensity models for churn and upsell, but only after data quality and reporting are stable.

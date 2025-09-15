@@ -1,10 +1,10 @@
-# Standard konfiguration
+# Standard configuration file for BizOps AI Agent Pro
 needs:
   clusters: 4
   top_terms: 8
 
 model:
-  target: churn   # fallback target hvis findes
+  target: churn   # Change to your target variable
   test_size: 0.2
   random_state: 42
   shap: true

@@ -1,3 +1,1 @@
-Vi oplever stigende udfordringer i forhold til at levere rettidig rapportering. Flere afdelinger arbejder i siloer,
-    og data deles ikke på tværs. Det betyder, at vi ofte får modstridende tal, og at ledelsen mister tilliden til vores rapporter.
-    Vi har brug for et fælles dashboard, hvor KPI'er er opdateret dagligt, og hvor fejl i datakilder automatisk bliver fanget.
+Forecasting is important but currently ad-hoc. Product usage is seasonal and promotions distort the baseline. We need a simple model as a starting point, even if the accuracy is modest, as long as it’s explainable. SHAP summaries would help non-technical stakeholders understand the drivers. We also want to track model drift and set guardrails. Any pilot should be low-risk and run alongside current planning to compare results.

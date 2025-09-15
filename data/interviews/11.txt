@@ -1,2 +1,1 @@
-IT-sikkerhedsteamet ønsker bedre værktøjer til at opdage unormal adfærd. Vi mangler en løsning til at analysere logfiler i realtid
-    og identificere mulige angreb. Samtidig vil vi gerne have automatiske rapporter om sikkerhedshændelser, som kan deles med ledelsen.
+We lack a consolidated overview across departments. Sales uses CRM terms, finance uses GL terms, and support has its own taxonomy. If we align keys and map categories, the rest becomes much easier. A weekly rhythm with standard reports and a monthly deep-dive would fit our bandwidth.

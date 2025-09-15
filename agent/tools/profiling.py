@@ -1,3 +1,11 @@
+"""
+Data quality profiling utilities.
+
+This module provides simple checks on tabular datasets,
+including missing values, duplicates, outlier estimates,
+and basic column statistics.
+"""
+
 import numpy as np
 import pandas as pd
 

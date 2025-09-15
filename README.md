@@ -1,56 +1,59 @@
-# BizOps AI Agent Pro
-
-# Formål
-Et AI-drevet analyseværktøj, der automatiserer behandlingen af tekst- og datasæt for at identificere mønstre, udlede forretningsbehov og generere KPI-forslag. Leverer komplette analyser af behov, datakvalitet, baseline-modeller og rapporter (HTML/PDF), styret via en LangGraph-agent og gemt i reproducerbare run-folders.
-
-En komplet demo-app til behovsanalyse, datakvalitet, baseline-model, og rapporter (HTML + PDF) med **run-folders** og **LangGraph-agent**.
+### BizOps AI Agent
 
 
-## Hurtig start (Windows PowerShell)
+## Purpose
+An AI-powered analysis tool that automates the processing of text and tabular datasets to identify patterns, extract business needs, and generate KPI suggestions.
+It delivers complete analyses of needs, data quality, baseline models, and reports (HTML/PDF), orchestrated via a LangGraph agent and stored in reproducible run-folders.
 
-# Gå til projektmappen
+This is a full demo application for needs analysis, data quality profiling, baseline modeling, and reporting (HTML + PDF) with run-folders and a LangGraph agent.
+
+
+## Quick start (Windows PowerShell)
+# Navigate to the project folder
 cd bizops_ai_agent_pro
 
-# Opret og aktivér virtuelt miljø
+
+# Create and activate a virtual environment
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
-# Installer afhængigheder
+# Install dependencies
 pip install -r requirements.txt
 
-# Start appen
+# Start the app
 streamlit run app/main.py
+
+> by default the app will fall back to **data/big_sample.csv** (~ 2000 rows) if no dataset is uploaded. This to ensure meaningful demo output.
 
 
 ## Features
+**Needs analysis** → TF-IDF + KMeans, including Danish stopword list and polishing into meaningful business themes
 
-**Needs analysis** → TF-IDF + KMeans, inkl. dansk stopordsliste og polering til meningsfulde temaer
+**Data quality** → missing values, duplicates, unique counts, simple outlier estimate
 
-**Data quality** → manglende værdier, duplicates, unikke værdier, simple outlier-estimat
+**Modeling** → classification/regression + optional SHAP plots for explainability
 
-**Modeling** → klassifikation/regression + valgfrit SHAP-plot for explainability
+**Reporting** → HTML + PDF export with Jinja2 templates
 
-**Reporting** → HTML + PDF med Jinja2-skabelon
+**Run-folders** → all outputs stored under data/runs/<timestamp>/
 
-**Run-folders** → al output gemmes under data/runs/<timestamp>/
+**LangGraph agent** → orchestrates the full flow (needs → dq → model → report → pdf)
 
-**LangGraph agent** → orkestrerer hele flowet (needs → dq → model → report → pdf)
-
-**Configurable** → central styring via configs/config.yaml
+**Configurable** → central settings in configs/config.yaml
 
 
-## Struktur
 
+## Project structure
 bizops_ai_agent_pro/
 ├─ .github/workflows/ci.yml         # CI/CD (ruff, black, mypy)
-├─ agent/                           # Orkestrering og værktøjer
+├─ agent/                           # Orchestration and tools
 │   ├─ graph.py
 │   └─ tools/{needs,profiling,modeling,reporting,utils}.py
 ├─ app/main.py                      # Streamlit UI
-├─ configs/config.yaml              # Projektkonfiguration
-├─ data/                            # Input- og outputdata
-│   ├─ interviews/                  # Uploadede interviews
-│   └─ runs/                        # Auto-genererede analyserapporter
+├─ configs/config.yaml              # Project configuration
+├─ data/                            # Input and output data
+│   ├─ interviews/                  # Uploaded interview files
+│   └─ runs/                        # Auto-generated analysis reports
 ├─ reports/templates/executive_report.html.j2
 ├─ tests/                           # (WIP) unit/integration tests
 ├─ requirements.txt

@@ -10,6 +10,7 @@ def render_html(
     template: str = "executive_report.html.j2",
     out_path: Path | None = None,
 ) -> str:
+    """Render a Jinja2 HTML template with the given context."""
     env = Environment(loader=FileSystemLoader(template_dir), autoescape=True)
     html = env.get_template(template).render(**context)
     if out_path:
@@ -19,7 +20,8 @@ def render_html(
 
 
 def html_to_pdf(html: str, pdf_path: Path) -> None:
-    from xhtml2pdf import pisa
+    """Convert an HTML string to PDF using xhtml2pdf."""
+    from xhtml2pdf import pisa  # make sure xhtml2pdf is installed
 
     pdf_path.parent.mkdir(parents=True, exist_ok=True)
     with open(pdf_path, "wb") as f:
@@ -27,33 +29,34 @@ def html_to_pdf(html: str, pdf_path: Path) -> None:
 
 
 def build_context(needs: dict, dq: dict, model: dict, cfg: dict) -> dict:
+    """Build the report context passed to the HTML template."""
     return {
         "report": {
-            "title": cfg.get("report", {}).get("title", "Executive Rapport"),
+            "title": cfg.get("report", {}).get("title", "Executive Report"),
             "client_name": cfg.get("report", {}).get("client_name", ""),
             "date": dt.date.today().isoformat(),
             "tldr": (
-                "Projektet anbefaler fokus på datakvalitet, standardrapporter "
-                "og churn-reducerende tiltag."
+                "The project recommends focusing on data quality, standardized reporting, "
+                "and churn-reducing initiatives."
             ),
         },
         "needs": needs,
         "delivery": {
             "phases": [
                 {
-                    "name": "Fase 1: Discovery",
+                    "name": "Phase 1: Discovery",
                     "weeks": 4,
-                    "outputs": ["Interviews", "Needs map", "KPIer"],
+                    "outputs": ["Interviews", "Needs map", "KPIs"],
                 },
                 {
-                    "name": "Fase 2: Data Foundation",
+                    "name": "Phase 2: Data Foundation",
                     "weeks": 6,
-                    "outputs": ["Dataprofilering", "Datasæt", "Standardrapporter"],
+                    "outputs": ["Data profiling", "Datasets", "Standard reports"],
                 },
                 {
-                    "name": "Fase 3: ML Pilot",
+                    "name": "Phase 3: ML Pilot",
                     "weeks": 6,
-                    "outputs": ["Baseline-model", "Validering", "Driftsskitse"],
+                    "outputs": ["Baseline model", "Validation", "Deployment outline"],
                 },
             ]
         },
@@ -67,16 +70,16 @@ def build_context(needs: dict, dq: dict, model: dict, cfg: dict) -> dict:
         "recommendations": {
             "top": [
                 {
-                    "title": "Styrk datakvalitet",
-                    "text": "Automatiser datatjek og definer klare ansvarspunkter.",
+                    "title": "Improve data quality",
+                    "text": "Automate data checks and define clear responsibilities.",
                 },
                 {
-                    "title": "Hurtig gevinst",
-                    "text": "Etabler ugentlige standardrapporter med nøgle-KPI’er.",
+                    "title": "Quick win",
+                    "text": "Establish weekly standard reports with key KPIs.",
                 },
                 {
-                    "title": "ML-pilot",
-                    "text": "Start med churn-påvirkende indsatser og mål effekt.",
+                    "title": "ML pilot",
+                    "text": "Start with churn-related initiatives and measure the effect.",
                 },
             ]
         },

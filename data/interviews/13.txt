@@ -1,3 +1,0 @@
-Projektledelse mangler et værktøj til at følge fremdrift. Vi registrerer status i Excel-ark, men det er svært at skabe overblik.
-    Et dashboard hvor alle projekter vises samlet, og hvor risici automatisk fremhæves, ville være en stor hjælp. Vi ønsker at rapportere
-    status ugentligt til direktionen uden at bruge tid på manuelle sammenstillinger.

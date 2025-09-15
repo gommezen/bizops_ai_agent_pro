@@ -1,3 +1,1 @@
-Ledelsen efterspørger bedre overblik over risiko. Vi vil gerne kunne simulere forskellige scenarier for markedet og se konsekvenser
-    for indtjening og omkostninger. Der er behov for at integrere eksterne data (makroøkonomi, branchedata) i vores modeller.
-    Målet er at træffe hurtigere og mere informerede strategiske beslutninger.
+Standard reports should be delivered on a fixed cadence. We don’t want last-minute requests to dominate. The report should include a short TL;DR. If something looks off, we need links back to the underlying data. Over time, a phased plan from data profiling to ML pilot would help leadership allocate resources and track progress.
